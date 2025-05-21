@@ -42,9 +42,12 @@
   </div>
 
   <div formArrayName="phoneNumbers">
-    @for (phoneNum of phoneNumbers.controls; track $index) {
+    @for (phoneNum of phoneNumbers.controls; track phoneNum) {
+      
+      
     <label>Phone Number {{ $index + 1}}</label>
-    <input type="text" [formControlName]="$index" [value]="this.phoneNumbers.value[$index]" />
+    <!-- <input type="text" [formControlName]="$index" [value]="this.phoneNumbers.value[$index]" /> -->
+    <input type="text" [formControlName]="$index" />
 
     <button type="button" (click)="removePhoneNumber($index)"
       [disabled]="this.phoneNumbers.length === 1">Remove</button>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { NgFor } from '@angular/common';
 
 @Component({
@@ -28,7 +28,10 @@ export class AppComponent {
           Validators.required,
           Validators.pattern(/^\d{10}$/),
         ])
-      ])
+      ],
+        {
+          validators: [this.atLeastOnePhoneValidator]
+        })
     });
   }
 
@@ -37,7 +40,6 @@ export class AppComponent {
   }
 
   addPhoneNumber() {
-    debugger;
     this.phoneNumbers.push(
       this.formBuilder.control('', [
         Validators.required,
@@ -50,7 +52,13 @@ export class AppComponent {
     this.phoneNumbers.removeAt(index);
   }
 
+  atLeastOnePhoneValidator(formArray: AbstractControl): ValidationErrors | null {
+    debugger;
+    return (formArray as FormArray).length > 0 ? null : { noPhone: true };
+  }
+
   submitForm() {
+    debugger;
     if (this.userForm.valid) {
       console.log(this.userForm.value);
     }
