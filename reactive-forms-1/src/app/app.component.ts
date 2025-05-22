@@ -53,12 +53,10 @@ export class AppComponent {
   }
 
   atLeastOnePhoneValidator(formArray: AbstractControl): ValidationErrors | null {
-    debugger;
     return (formArray as FormArray).length > 0 ? null : { noPhone: true };
   }
 
   submitForm() {
-    debugger;
     if (this.userForm.valid) {
       console.log(this.userForm.value);
     }

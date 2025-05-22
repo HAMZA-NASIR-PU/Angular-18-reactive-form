@@ -1,0 +1,107 @@
+<form class="reactive-form-1" [formGroup]="userForm" (ngSubmit)="submitForm()">
+  <div>
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" formControlName="name">
+
+    @if (this.userForm.get('name')?.invalid && this.userForm.get('name')?.touched) {
+    <span style="color: red;">Name is required</span>
+    }
+  </div>
+
+  <div>
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" formControlName="email">
+
+    @if (this.userForm.get('email')?.invalid && this.userForm.get('email')?.touched) {
+    @if (this.userForm.get('email')?.errors?.['required']) {
+    <span style="color: red;">Email is required</span>
+    }
+    @if (this.userForm.get('email')?.errors?.['pattern']) {
+    <span style="color: red;">Enter a valid email address</span>
+    }
+    }
+  </div>
+
+  <div formGroupName="passwordGroup">
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" formControlName="password">
+
+    @if (this.userForm.get('passwordGroup.password')?.invalid && this.userForm.get('passwordGroup.password')?.touched) {
+    @if (this.userForm.get('passwordGroup.password')?.errors?.['required']) {
+    <span style="color: red;">Password is required</span>
+    }
+    }
+
+    <!-- @if (this.userForm.get('passwordGroup.password')?.errors?.['minLength']) {
+    <span style="color: red;">Password must be at least 6 characters.</span>
+    } -->
+
+
+    @if (this.userForm.get('passwordGroup.password')?.hasError('minlength')) {
+    <span style="color: red;">Password must be at least 6 characters.</span>
+    }
+
+
+    <br>
+
+    <label for="city">Confirm Password</label>
+    <input type="password" id="confirmPassword" name="confirmPassword" formControlName="confirmPassword">
+
+    @if (this.userForm.get('passwordGroup.confirmPassword')?.invalid &&
+    this.userForm.get('passwordGroup.confirmPassword')?.touched) {
+    <span style="color: red;">Confirm Password is required</span>
+    }
+  </div>
+
+  @if (this.userForm.get('passwordGroup')?.errors?.['passwordMismatch']) {
+  <span style="color: red;">Password and Confirm Password must be matched</span>
+  }
+
+  <div formGroupName="address">
+    <label for="street">Street</label>
+    <input type="text" id="street" name="street" formControlName="street">
+
+    @if (this.userForm.get('address.street')?.invalid && this.userForm.get('address.street')?.touched) {
+    <span style="color: red;">Street is required</span>
+    }
+
+    <br>
+
+    <label for="city">City</label>
+    <input type="text" id="city" name="city" formControlName="city">
+
+    @if (this.userForm.get('address.city')?.invalid && this.userForm.get('address.city')?.touched) {
+    <span style="color: red;">City is required</span>
+    }
+
+  </div>
+
+  <div formArrayName="phoneNumbers">
+
+    @for (phoneNum of this.phoneNumbers.controls; track phoneNum) {
+    <label>Phone Number {{$index + 1}}</label>
+    <input type="text" [formControlName]="$index">
+
+    @if (phoneNum.errors?.['pattern']) {
+    <span style="color: red;">Phone number must be 10 digits.</span>
+    }
+
+    <button type="button" (click)="removePhoneNumber($index)">Remove</button>
+    <hr>
+    }
+
+  </div>
+
+  <div>
+    <button type="button" (click)="addPhoneNumber()">Add Phone Number</button>
+  </div>
+
+  @if (this.phoneNumbers.errors?.['noPhone']) {
+  <span style="color: red;">At leat one phone number is required.</span>
+  }
+
+  <div>
+    <button type="submit">Submit</button>
+  </div>
+
+</form>
