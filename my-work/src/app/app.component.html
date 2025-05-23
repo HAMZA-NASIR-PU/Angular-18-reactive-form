@@ -1,0 +1,120 @@
+<form class="reactive-form-1" [formGroup]="jobForm" (ngSubmit)="submit()">
+  <!-- Personal Info -->
+  <section formGroupName="personalInfo" class="space-y-2">
+    <h2 class="text-xl font-bold">Personal Information</h2>
+
+    <label for="firstName">First Name</label>
+    <input type="text" placeholder="First Name" formControlName="firstName" />
+
+    @if (this.jobForm.get('personalInfo.firstName')?.invalid && this.jobForm.get('personalInfo.firstName')?.touched) {
+    <span style="color: red;">First Name is required</span>
+    }
+
+    <label for="lastName">Last Name</label>
+    <input type="text" placeholder="Last Name" formControlName="lastName" />
+
+    @if (this.jobForm.get('personalInfo.lastName')?.invalid && this.jobForm.get('personalInfo.lastName')?.touched) {
+    <span style="color: red;">Last Name is required</span>
+    }
+
+    <label for="name">Email</label>
+    <input type="email" placeholder="Email" formControlName="email" />
+
+    @if (this.jobForm.get('personalInfo.email')?.invalid && this.jobForm.get('personalInfo.email')?.touched) {
+    <span style="color: red;">Email is required</span>
+    }
+
+    <label for="name">Phone</label>
+    <input type="text" placeholder="Phone (Optional)" formControlName="phone" />
+
+    @if (this.jobForm.get('personalInfo.phone')?.hasError('pattern') && this.jobForm.get('personalInfo.phone')?.touched)
+    {
+    <span style="color: red;">Please enter a valid phone number.</span>
+    }
+  </section>
+
+  <!-- Education, Experience, References - To be implemented -->
+
+  <!-- Education -->
+  <section formArrayName="education" class="space-y-4">
+    <h2 class="text-xl font-bold">Education</h2>
+
+    @for (edu of education.controls; track edu) {
+    <div [formGroupName]="$index" class="grid grid-cols-2 gap-4 p-4 border rounded-lg bg-gray-50">
+      <input class="input" placeholder="Institution" formControlName="institution" />
+      <input class="input" placeholder="Degree" formControlName="degree" />
+      <input class="input" placeholder="Start Year" type="number" formControlName="startYear" />
+      <input class="input" placeholder="End Year" type="number" formControlName="endYear" />
+      @if (edu?.hasError('yearRange')) {
+      <span style="color: red;">Start year must be before end year.</span>
+      }
+      <button class="text-red-500 col-span-2" type="button" (click)="removeEducation($index)"
+        *ngIf="education.length > 1">
+        Remove
+      </button>
+    </div>
+    }
+    <button type="button" (click)="addEducation()" class="btn btn-secondary">
+      Add Education
+    </button>
+  </section>
+
+  <!-- Work Experience -->
+  <section formArrayName="experience" class="space-y-6">
+    <h2 class="text-xl font-bold">Work Experience</h2>
+
+    @for (exp of experience.controls; track exp; let i = $index) {
+    <div [formGroupName]="i" class="border rounded-lg p-4 bg-slate-50 space-y-2">
+      <input class="input" placeholder="Company Name" formControlName="companyName" />
+      <input class="input" placeholder="Job Title" formControlName="jobTitle" />
+      <input class="input" type="date" formControlName="startDate" />
+      <input class="input" type="date" formControlName="endDate" />
+
+      @if (exp?.hasError('dateRange')) {
+      <span style="color: red;">Start date must be before end date.</span>
+      }
+
+
+      <!-- Responsibilities -->
+      <div formArrayName="responsibilities">
+        <h3 class="font-semibold mt-2">Responsibilities</h3>
+
+        @for (res of getResponsibilities(i).controls; track res; let j = $index) {
+        <div [formArrayName]="j" class="flex items-center gap-2 mt-1">
+          <input class="input flex-1" [formControl]="getResponsibilities(i).at(j)" placeholder="Responsibility" />
+          <button type="button" (click)="removeResponsibility(i, j)" class="text-red-500"
+            [disabled]="getResponsibilities(i).length == 1">✖</button>
+        </div>
+        }
+
+        <button type="button" (click)="addResponsibility(i)" class="btn btn-secondary mt-2">Add
+          Responsibility</button>
+      </div>
+
+      <button type="button" (click)="removeExperience(i)" class="text-red-600 mt-2">Remove Experience</button>
+    </div>
+    }
+
+    <button type="button" (click)="addExperience()" class="btn btn-secondary">
+      Add Work Experience
+    </button>
+  </section>
+
+
+
+
+  <!-- Agreements -->
+  <section formGroupName="agreements" class="space-y-2">
+    <label class="flex items-center gap-2">
+      <input type="checkbox" formControlName="terms" />
+      I agree to the terms & conditions
+    </label>
+    <label class="flex items-center gap-2">
+      <input type="checkbox" formControlName="gdprConsent" />
+      I agree to GDPR policy
+    </label>
+  </section>
+
+  <!-- <button type="submit" class="btn btn-primary" [disabled]="jobForm.invalid">Submit</button> -->
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>

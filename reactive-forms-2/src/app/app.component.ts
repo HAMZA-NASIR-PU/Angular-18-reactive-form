@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 
 
 @Component({
@@ -17,6 +17,7 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule
 export class AppComponent {
 
   userForm!: FormGroup;
+  myControl!: FormControl;
 
   constructor(private formBuilder: FormBuilder) {
     this.userForm = this.formBuilder.group({

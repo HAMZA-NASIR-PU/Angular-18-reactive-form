@@ -16,7 +16,7 @@
     @if (this.userForm.get('email')?.errors?.['required']) {
     <span style="color: red;">Email is required</span>
     }
-    @if (this.userForm.get('email')?.errors?.['pattern']) {
+    @if (this.userForm.get('email')?.errors?.['email']) {
     <span style="color: red;">Enter a valid email address</span>
     }
     }
@@ -27,30 +27,36 @@
     <input type="password" id="password" name="password" formControlName="password">
 
     @if (this.userForm.get('passwordGroup.password')?.invalid && this.userForm.get('passwordGroup.password')?.touched) {
+
+    <!-- @if (this.userForm.get('passwordGroup.password')?.hasError('required')) {
+    <span style="color: red;">Error: Password is required</span>
+    } -->
+
     @if (this.userForm.get('passwordGroup.password')?.errors?.['required']) {
     <span style="color: red;">Password is required</span>
     }
     }
 
-    <!-- @if (this.userForm.get('passwordGroup.password')?.errors?.['minLength']) {
-    <span style="color: red;">Password must be at least 6 characters.</span>
-    } -->
+    <!-- @if (this.userForm.get('passwordGroup.password')?.errors?.['minlength']?.actualLength <
+      this.userForm.get('passwordGroup.password')?.errors?.['minlength']?.requiredLength) { <span style="color: red;">
+      Error: Password must be at least 6 characters.</span>
+      } -->
 
 
-    @if (this.userForm.get('passwordGroup.password')?.hasError('minlength')) {
-    <span style="color: red;">Password must be at least 6 characters.</span>
-    }
+      @if (this.userForm.get('passwordGroup.password')?.hasError('minlength')) {
+      <span style="color: red;">Password must be at least 6 characters.</span>
+      }
 
 
-    <br>
+      <br>
 
-    <label for="city">Confirm Password</label>
-    <input type="password" id="confirmPassword" name="confirmPassword" formControlName="confirmPassword">
+      <label for="city">Confirm Password</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" formControlName="confirmPassword">
 
-    @if (this.userForm.get('passwordGroup.confirmPassword')?.invalid &&
-    this.userForm.get('passwordGroup.confirmPassword')?.touched) {
-    <span style="color: red;">Confirm Password is required</span>
-    }
+      @if (this.userForm.get('passwordGroup.confirmPassword')?.invalid &&
+      this.userForm.get('passwordGroup.confirmPassword')?.touched) {
+      <span style="color: red;">Confirm Password is required</span>
+      }
   </div>
 
   @if (this.userForm.get('passwordGroup')?.errors?.['passwordMismatch']) {
